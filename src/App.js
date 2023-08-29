@@ -1,8 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import axios from "axios";
+import apiKeys from "./apiKeys";
 import "bootstrap/dist/css/bootstrap.css";
 import  CityComponent from "./components/CityComponent";
 import WeatherComponent from "./components/WeatherComponent";
+import ErrorPage from "./components/ErrorPage";
 import "./App.css";
 
 const Container = styled.div`
@@ -30,14 +33,45 @@ const AppName = styled.h1`
 
 
 function App() {
+  const [city, updateCity] = useState();
+  const [weather, updateWeather] = useState();
+  const [error, updateError] = useState();
+
+  const fetchWeather = async (e)=>{
+    e.preventDefault();
+    try{
+      const response= await axios.get(`${apiKeys.base}weather?q=${city}&appid=${apiKeys.key}`);
+      updateWeather(response.data);
+      error?updateError(null):console.log("No Error");
+    }
+    catch(err){
+      updateError(err.response.data.message);
+      updateWeather(null);
+    }
+    
+
+  };
+
   return (
     <>
       <Container>
 
         <AppName>React Weather App</AppName>
+        {
+          error?(
+            <ErrorPage error={error} updateError={updateError} updateCity={updateCity} fetchWeather={fetchWeather}/>
 
-        {/* <CityComponent/> */}
-        <WeatherComponent/>
+          ):(
+            weather?(
+              <WeatherComponent weather={weather} updateCity={updateCity} fetchWeather={fetchWeather}/>
+            ):(
+              <CityComponent updateCity={updateCity} fetchWeather={fetchWeather}/>
+            )
+          )
+          
+        }
+        
+        {/* <WeatherComponent/> */}
 
         
 

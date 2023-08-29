@@ -1,8 +1,8 @@
 const WeatherIconsCollection ={
-    temp: "../assets/temp.png",
-    pressure: "../assets/pressure.png",
-    humidity: "../assets/humidity.png",
-    wind: "../assets/wind.png",
+    temp: "./weather-app/assets/temp.png",
+    pressure: "./weather-app/assets/pressure.png",
+    humidity: "./weather-app/assets/humidity.png",
+    wind: "./weather-app/assets/wind.png",
 };
 
 export default WeatherIconsCollection;
